@@ -19,7 +19,8 @@
 // TODO Set linker code offset to '800' under "Additional options" pull-down.
 
 // Program variable definitions
-unsigned char TonLED4 = 127;    // LED brightness PWM value
+unsigned char TonLED4 = 127;
+unsigned char TonLED5 = 0;    // LED brightness PWM value
 unsigned char PWMperiod;        // PWM period counter for PWM loops
 unsigned int period = 460;      // Sound period value for later activities
 
@@ -30,30 +31,45 @@ int main(void)
 	
     while(1)
 	{
-        // Decrease brightness
-        if(SW2 == 0)
+        // Decrease brightness for LED4
+        if(SW2 == 0 && TonLED4 != 0)
         {
             TonLED4 -= 1;
         }
 
-        // Increase brightness
-        if(SW3 == 0)
+        // Increase brightness for LED4
+        if(SW3 == 0 && TonLED4 !=255)
         {
             TonLED4 += 1;
         }
         
+           // Decrease brightness for LED5
+        if(SW5 == 0 && TonLED5 != 0)
+        {
+            TonLED5 -= 1;
+        }
+
+        // Increase brightness for LED5
+        if(SW4 == 0 && TonLED5 !=255)
+        {
+            TonLED5 += 1;
+        }
+
         // PWM LED4 brightness
-        PWMperiod = 255;
-        while(PWMperiod != 0)
+        for(PWMperiod = 255; PWMperiod != 0; PWMperiod --)
         {
             if(TonLED4 == PWMperiod)
             {
                 LED4 = 1;
             }
-            PWMperiod --;
+             if(TonLED5 == PWMperiod)
+            {
+                LED5 = 1;
+            }
             __delay_us(20);
         }
         LED4 = 0;
+        LED5 = 0;
         
         // Activate bootloader if SW1 is pressed.
         if(SW1 == 0)
